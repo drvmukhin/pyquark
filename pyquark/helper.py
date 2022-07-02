@@ -78,9 +78,10 @@ def logs_prefix(*args, **kwargs):
     i = 1 if not args or len(args) < 2 else args[1]
     imax = 3 if not args else args[0]
     memorized_name = None
+    excludes = ('dispatch', 'view', 'func_wrapper')
     while True:
         name = str(sys._getframe(i).f_code.co_name)
-        if 'func_wrapper' in name or name == memorized_name:
+        if type(name).__name__ == 'NoneType' or name == memorized_name or name in excludes:
             i += 1
             imax += 1
             continue
