@@ -3,6 +3,7 @@ import json
 import unicodedata
 import re
 import os
+import logging
 from datetime import datetime
 from threading import Thread
 from typing import Optional
@@ -27,6 +28,39 @@ def target_directory(output_path: Optional[str] = None) -> str:
     os.makedirs(output_path, exist_ok=True)
     return output_path
 
+""" Tips and Hints for basic color coding the output in console.
+Usage of "\033[": This is to handle the console cursor. 
+(https://cplusplus.com/forum/unices/36461/)
+"""
+cc = {
+    'black': '30',
+    'red': '31',
+    'green': '32',
+    'brown': '33',
+    'blue': '34',
+    'magenta': '35',
+    'cyan': '36',
+    'lightgray': '37'}
+
+"""Usage Format: 
+* 'm' character at the end of each of the following sentences is used as a 
+stop character, where the system should stop and parse the \033[ syntax.
+\033[0m - is the default color for the console
+\033[0;#m - is the color of the text, where # is one of the codes mentioned above
+\033[1m - makes text bold
+\033[1;#m - makes colored text bold**
+\033[2;#m - colors text according to # but a bit darker
+\033[4;#m - colors text in # and underlines
+\033[7;#m - colors the background according to #
+\033[9;#m - colors text and strikes it
+\033[A - moves cursor one line above (carfull: it does not erase the previously written line)
+\033[B - moves cursor one line under
+\033[C - moves cursor one spacing to the right
+\033[D - moves cursor one spacing to the left
+\033[E - don't know yet
+\033[F - don't know yet
+\033[2K - erases everything written on line before this.
+"""
 
 class bcolors:
     HEADER = '\033[95m'
@@ -34,36 +68,36 @@ class bcolors:
     OKGREEN = '\033[92m'
     WARNING = '\033[93m'
     FAIL = '\033[1;31;40m'
+    RED = '\033[31m'
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
 
 def gprint(string):
-    string = "{}" + string + "{}"
-    print(string.format(bcolors.OKGREEN, bcolors.ENDC))
+    print("{}{}{}".format(bcolors.OKGREEN, string, bcolors.ENDC))
 
 
 def bprint(string):
-    string = "{}" + string + "{}"
-    print(string.format(bcolors.OKBLUE, bcolors.ENDC))
+    print("{}{}{}".format(bcolors.OKBLUE, string, bcolors.ENDC))
 
 
 def yprint(string, **kwargs):
-    string = "{}" + string + "{}"
     if kwargs and kwargs.get('end') == "":
-        print(string.format(bcolors.WARNING, bcolors.ENDC), end=kwargs['end'])
+        print("{}{}{}".format(bcolors.WARNING, string, bcolors.ENDC), end="")
     else:
-        print(string.format(bcolors.WARNING, bcolors.ENDC))
+        print("{}{}{}".format(bcolors.WARNING, string, bcolors.ENDC))
 
 
 def rprint(string):
-    string = "{}" + string + "{}"
-    print(string.format(bcolors.FAIL, bcolors.ENDC))
+    print("{}{}{}".format(bcolors.RED, string, bcolors.ENDC))
+
+
+def print_error(string):
+    print("{}{}{}".format(bcolors.FAIL, string, bcolors.ENDC))
 
 
 def logs_prefix(*args, **kwargs):
-    # _func_ = '[{}] '.format(datetime.now().strftime("%d/%b/%Y %H:%M:%S"))
     _func_ = ''
     if kwargs.get('cls'):
         _func_ += '[{}.'.format(kwargs['cls'].__name__)
@@ -78,7 +112,7 @@ def logs_prefix(*args, **kwargs):
     i = 1 if not args or len(args) < 2 else args[1]
     imax = 3 if not args else args[0]
     memorized_name = None
-    excludes = ('dispatch', 'view', 'func_wrapper')
+    excludes = ('dispatch', 'view', 'func_wrapper', 'inner')
     while True:
         name = str(sys._getframe(i).f_code.co_name)
         if type(name).__name__ == 'NoneType' or name == memorized_name or name in excludes:
@@ -214,6 +248,62 @@ def start_as_thread(func):
 
 
 class P(object):
+    FORMAT = '[{}] {}{}'
+
+    def __init__(self, **kwargs):
+        """
+        Parameters:
+            omit: skips regular print, but allows all colored print methods
+            omitall: skips all prints methods except rprint
+            prefix: controls if data+method name to be added to prefix
+        """
+        self.omit = False
+        self.omit_all = False
+        if kwargs.get('omit'):
+            self.omit = True
+        if kwargs.get('omitall'):
+            self.omit = True
+            self.omit_all = True
+        if kwargs.get('native'):
+            self.prefix = ''
+        elif kwargs.get('inst'):
+            self.prefix = logs_prefix(4, 2, self=kwargs['inst'], decorator=kwargs.get('decorator'))
+        elif kwargs.get('cls'):
+            self.prefix = logs_prefix(4, 2, cls=kwargs['cls'], decorator=kwargs.get('decorator'))
+        else:
+            self.prefix = logs_prefix(4, 2, decorator=kwargs.get('decorator'))
+
+    def print(self, str_line, **kwargs):
+        if self.omit:
+            return
+        print(self.FORMAT.format(datetime.now().strftime("%d/%b/%Y %H:%M:%S"), self.prefix, str_line), **kwargs)
+
+    def rprint(self, str_line, **kwargs):
+        rprint(self.FORMAT.format(datetime.now().strftime("%d/%b/%Y %H:%M:%S"), self.prefix, str_line))
+
+    def yprint(self, str_line, **kwargs):
+        if self.omit_all:
+            return
+        yprint(self.FORMAT.format(datetime.now().strftime("%d/%b/%Y %H:%M:%S"), self.prefix, str_line), **kwargs)
+
+    def bprint(self, str_line, **kwargs):
+        if self.omit_all:
+            return
+        bprint(self.FORMAT.format(datetime.now().strftime("%d/%b/%Y %H:%M:%S"), self.prefix, str_line))
+
+    def gprint(self, str_line, **kwargs):
+        if self.omit_all:
+            return
+        gprint(self.FORMAT.format(datetime.now().strftime("%d/%b/%Y %H:%M:%S"), self.prefix, str_line))
+
+    def print_error(self, errors: dict):
+        prefix = '[{}] {}'.format(datetime.now().strftime("%d/%b/%Y %H:%M:%S"), self.prefix)
+        for error_key, error_value in errors.items():
+            if error_key not in ('error', 'source', 'params'):
+                continue
+            print_error("{}{}: {}".format(prefix, str(error_key).capitalize(), error_value))
+
+class L(object):
 
     def __init__(self, **kwargs):
         """
@@ -273,6 +363,7 @@ class P(object):
                 rprint(prefix + str(error_key).capitalize() + ": " + f_error_value)
 
 
+
 def slugify(value, allow_unicode=False):
     """
     Taken from https://github.com/django/django/blob/master/django/utils/text.py
@@ -288,3 +379,24 @@ def slugify(value, allow_unicode=False):
         value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore').decode('ascii')
     value = re.sub(r'[^\w\s-]', '', value.lower())
     return re.sub(r'[-\s]+', '_', value).strip('-_')
+
+def main():
+    test_dict = {
+        "a": "AA",
+        "b": "BB",
+        "error": "Print my error"
+    }
+    bprint(f"{test_dict}")
+    gprint(f"{test_dict}")
+    rprint(f"{test_dict}")
+    yprint(f"{test_dict}")
+    print_error(f"{test_dict}")
+    p = P(decorator="decorator")
+    p.bprint(f"{test_dict}")
+    p.gprint(f"{test_dict}")
+    p.rprint(f"{test_dict}")
+    p.yprint(f"{test_dict}")
+    p.print_error(test_dict)
+
+
+main()
