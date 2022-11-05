@@ -398,5 +398,5 @@ def main():
     p.yprint(f"{test_dict}")
     p.print_error(test_dict)
 
-
-main()
+if __name__ == "__main__":
+    main()
