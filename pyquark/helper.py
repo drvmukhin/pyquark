@@ -329,6 +329,7 @@ class P(object):
 class L(object):
 
     ERROR_FILE = "app_errors.log"
+    APPLICATION_INDEX = ""
     LOG_DIR = target_directory("logs")
     FORMAT = '{}{}'
 
@@ -359,6 +360,7 @@ class L(object):
         else:
             self.prefix = logs_prefix(4, 2, decorator=decorator)
 
+        application = f"{application}_{self.app_index()}" if self.app_index() else application
         logger_level = logging.DEBUG
         handler_level = logging.DEBUG if debug else logging.WARNING
         if application in logging.Logger.manager.loggerDict.keys() and not init:
@@ -385,6 +387,14 @@ class L(object):
 
             """Print"""
             self.logger.info(f'Logger "{application}" created.')
+
+    @classmethod
+    def app_index(cls):
+        return cls.APPLICATION_INDEX
+
+    @classmethod
+    def set_app_index(cls, name: str):
+        cls.APPLICATION_INDEX = name
 
     def print(self, str_line, **kwargs):
         if self.omit:
@@ -477,7 +487,8 @@ def main():
     p.print_error(test_dict)
 
     print("\n==== Logs based on python logging. DEBUG is OFF + logging to file ====")
-    p = L(application="Helper_2", debug=False, init=True, decorator="decorator")
+    L.set_app_index("3")
+    p = L(application="Helper", debug=False, init=True, decorator="decorator")
     p.print(f"Print dictionary: {test_dict}")
     p.bprint(f"Print dictionary: {test_dict}")
     p.gprint(f"Print dictionary: {test_dict}")

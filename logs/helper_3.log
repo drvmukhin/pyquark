@@ -1,0 +1,6 @@
+[05/Nov/22 23:06:43] Helper_3:   INFO Logger "Helper_3" created.
+[05/Nov/22 23:06:43] Helper_3:   INFO [main.decorator]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[05/Nov/22 23:06:43] Helper_3:   INFO [main.decorator]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[05/Nov/22 23:06:43] Helper_3: WARNING [main.decorator]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[05/Nov/22 23:06:43] Helper_3:   INFO [main.decorator]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[05/Nov/22 23:06:43] Helper_3:  ERROR [main.decorator]  Error: Print my error
