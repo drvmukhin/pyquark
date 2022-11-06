@@ -4,6 +4,7 @@ import unicodedata
 import re
 import os
 import logging
+import logging.handlers
 from datetime import datetime
 from threading import Thread
 from typing import Optional
@@ -15,9 +16,9 @@ def target_directory(output_path: Optional[str] = None) -> str:
     Returns an absolute path (if relative one given) or the current
     path (if none given). Makes directory if it does not exist.
 
-    :type output_path: str
+    type output_path: str
         :rtype: str
-    :returns:
+    returns:
         An absolute directory path as a string.
     """
     if output_path:
@@ -27,6 +28,7 @@ def target_directory(output_path: Optional[str] = None) -> str:
         output_path = os.getcwd()
     os.makedirs(output_path, exist_ok=True)
     return output_path
+
 
 """ Tips and Hints for basic color coding the output in console.
 Usage of "\033[": This is to handle the console cursor. 
@@ -72,6 +74,26 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
+
+
+def rstring(string):
+    return "{}{}{}".format(bcolors.RED, string, bcolors.ENDC)
+
+
+def gstring(string):
+    return "{}{}{}".format(bcolors.OKGREEN, string, bcolors.ENDC)
+
+
+def bstring(string):
+    return "{}{}{}".format(bcolors.OKBLUE, string, bcolors.ENDC)
+
+
+def ystring(string, **kwargs):
+    return "{}{}{}".format(bcolors.WARNING, string, bcolors.ENDC)
+
+
+def error_string(string):
+    return "{}{}{}".format(bcolors.FAIL, string, bcolors.ENDC)
 
 
 def gprint(string):
@@ -145,13 +167,12 @@ def json_export():
     export_file = open(project_file, 'w')
     strLine = json.dumps(data)
     export_file.write(strLine)
-    data = json.loads(strLine)
 
 
-def get_choice(CHOICES, mychoice, allow_revers: bool = True):
-    if not CHOICES or CHOICES.__class__.__name__ not in ('list', 'tuple', 'dict'):
+def get_choice(choices, mychoice, allow_revers: bool = True):
+    if not choices or choices.__class__.__name__ not in ('list', 'tuple', 'dict'):
         return None
-    for choice in CHOICES:
+    for choice in choices:
         if choice[0] == mychoice:
             return choice[1]
         elif choice[1] == mychoice and allow_revers:
@@ -237,6 +258,7 @@ def clean_switch_field(self, forms, error_message):
 
 def start_as_thread(func):
     _func_ = logs_prefix()
+
     def func_wrapper(*args, **kwargs):
         if kwargs:
             yprint(_func_ + ': starting {} as a thread'.format(func.__name__))
@@ -254,14 +276,14 @@ class P(object):
         """
         Parameters:
             omit: skips regular print, but allows all colored print methods
-            omitall: skips all prints methods except rprint
+            omit_all: skips all prints methods except rprint
             prefix: controls if data+method name to be added to prefix
         """
         self.omit = False
         self.omit_all = False
         if kwargs.get('omit'):
             self.omit = True
-        if kwargs.get('omitall'):
+        if kwargs.get('omit_all'):
             self.omit = True
             self.omit_all = True
         if kwargs.get('native'):
@@ -303,65 +325,115 @@ class P(object):
                 continue
             print_error("{}{}: {}".format(prefix, str(error_key).capitalize(), error_value))
 
+
 class L(object):
 
-    def __init__(self, **kwargs):
+    ERROR_FILE = "app_errors.log"
+    LOG_DIR = target_directory("logs")
+    FORMAT = '{}{}'
+
+    def __init__(self, 
+                 application: str = "Application", 
+                 debug: bool = True, 
+                 omit: bool = False, 
+                 omit_all: bool = False,
+                 native: bool = False,
+                 decorator: str = "",
+                 init: bool = False,
+                 **kwargs):
         """
         Parameters:
             omit: skips regular print, but allows all colored print methods
-            omitall: skips all prints methods except rprint
+            omit_all: skips all prints methods except rprint
             prefix: controls if data+method name to be added to prefix
         """
-        self.omit = False
-        self.omit_all = False
-        if kwargs.get('omit'):
-            self.omit = True
-        if kwargs.get('omitall'):
-            self.omit = True
-            self.omit_all = True
-        if kwargs.get('native'):
+        self.omit = omit if not omit_all else omit_all
+        self.omit_all = omit_all
+        self.debug = debug
+        if native:
             self.prefix = ''
         elif kwargs.get('inst'):
-            self.prefix = logs_prefix(4, 2, self=kwargs['inst'], decorator=kwargs.get('decorator'))
+            self.prefix = logs_prefix(4, 2, self=kwargs['inst'], decorator=decorator)
         elif kwargs.get('cls'):
-            self.prefix = logs_prefix(4, 2, cls=kwargs['cls'], decorator=kwargs.get('decorator'))
+            self.prefix = logs_prefix(4, 2, cls=kwargs['cls'], decorator=decorator)
         else:
-            self.prefix = logs_prefix(4, 2, decorator=kwargs.get('decorator'))
+            self.prefix = logs_prefix(4, 2, decorator=decorator)
+
+        logger_level = logging.DEBUG
+        handler_level = logging.DEBUG if debug else logging.WARNING
+        if application in logging.Logger.manager.loggerDict.keys() and not init:
+            self.logger = logging.getLogger(application)
+            self.logger.info(f'Logger "{application}" already exists. Using this logger')
+        else:
+            self.logger = logging.getLogger(application)
+            self.logger.setLevel(logger_level)  # Set's the root level for the logger. Handler can overwrite it
+            log_format = logging.Formatter('[%(asctime)s] %(name)s: %(levelname)6s %(message)s', datefmt='%d/%b/%y %H:%M:%S')
+            """ Console handler """
+            log_con_handler = logging.StreamHandler()
+            log_con_handler.setFormatter(log_format)
+            log_con_handler.setLevel(handler_level)  # NOTSET(0),DEBUG(10),INFO(20),WARNING(30),ERROR(40),CRITICAL(50)
+            self.logger.addHandler(log_con_handler)
+            """ File handler """
+            if not self.debug:
+                self.log_file_name = f"{self.LOG_DIR}/{application.lower()}.log"
+                log_file_handler = logging.handlers.TimedRotatingFileHandler(filename=self.log_file_name,
+                                                                             when='midnight',
+                                                                             backupCount=30)
+                log_file_handler.setFormatter(log_format)
+                log_file_handler.setLevel(logging.INFO)  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+                self.logger.addHandler(log_file_handler)
+
+            """Print"""
+            self.logger.info(f'Logger "{application}" created.')
 
     def print(self, str_line, **kwargs):
         if self.omit:
             return
-        print('[{}] '.format(datetime.now().strftime("%d/%b/%Y %H:%M:%S")) + self.prefix + str_line, **kwargs)
+        self.logger.debug(self.FORMAT.format(self.prefix, str_line))
 
     def rprint(self, str_line, **kwargs):
-        rprint('[{}] '.format(datetime.now().strftime("%d/%b/%Y %H:%M:%S")) + self.prefix + str_line)
+        if self.debug:
+            str_line = rstring(self.FORMAT.format(self.prefix, str_line))
+            self.logger.warning(str_line)
+        else:
+            self.logger.warning(self.FORMAT.format(self.prefix, str_line))
 
     def yprint(self, str_line, **kwargs):
         if self.omit_all:
             return
-        yprint('[{}] '.format(datetime.now().strftime("%d/%b/%Y %H:%M:%S")) + self.prefix + str_line, **kwargs)
+        if self.debug:
+            str_line = ystring(self.FORMAT.format(self.prefix, str_line))
+            self.logger.info(str_line)
+        else:
+            self.logger.info(self.FORMAT.format(self.prefix, str_line))
 
     def bprint(self, str_line, **kwargs):
         if self.omit_all:
             return
-        bprint('[{}] '.format(datetime.now().strftime("%d/%b/%Y %H:%M:%S")) + self.prefix + str_line)
+        if self.debug:
+            str_line = bstring(self.FORMAT.format(self.prefix, str_line))
+            self.logger.info(str_line)
+        else:
+            self.logger.info(self.FORMAT.format(self.prefix, str_line))
 
     def gprint(self, str_line, **kwargs):
         if self.omit_all:
             return
-        gprint('[{}] '.format(datetime.now().strftime("%d/%b/%Y %H:%M:%S")) + self.prefix + str_line)
+        if self.debug:
+            str_line = gstring(self.FORMAT.format(self.prefix, str_line))
+            self.logger.info(str_line)
+        else:
+            self.logger.info(self.FORMAT.format(self.prefix, str_line))
 
-    def rprint_error(self, errors: dict):
-        prefix = '[{}] '.format(datetime.now().strftime("%d/%b/%Y %H:%M:%S")) + self.prefix
+    def print_error(self, errors: dict):
         for error_key, error_value in errors.items():
             if error_key not in ('error', 'source', 'params'):
                 continue
-            f_error_value = f"{error_value}"
-            if type(error_value).__name__ not in ('str', 'int'):
-                print(prefix + str(error_key).capitalize() + ": " + f_error_value)
+            if self.debug:
+                str_line = error_string('{}{}: {}'.format(self.prefix, str(error_key).capitalize(), error_value))
+                self.logger.error(str_line)
             else:
-                rprint(prefix + str(error_key).capitalize() + ": " + f_error_value)
-
+                self.logger.error('{}{}: {}'.format(self.prefix, str(error_key).capitalize(), error_value))
 
 
 def slugify(value, allow_unicode=False):
@@ -380,23 +452,39 @@ def slugify(value, allow_unicode=False):
     value = re.sub(r'[^\w\s-]', '', value.lower())
     return re.sub(r'[-\s]+', '_', value).strip('-_')
 
+
 def main():
     test_dict = {
         "a": "AA",
         "b": "BB",
         "error": "Print my error"
     }
-    bprint(f"{test_dict}")
-    gprint(f"{test_dict}")
-    rprint(f"{test_dict}")
-    yprint(f"{test_dict}")
-    print_error(f"{test_dict}")
+    print("==== Standard colored print methods ====")
     p = P(decorator="decorator")
     p.bprint(f"{test_dict}")
     p.gprint(f"{test_dict}")
     p.rprint(f"{test_dict}")
     p.yprint(f"{test_dict}")
     p.print_error(test_dict)
+
+    print("\n==== Logs based on python logging. DEBUG is ON =====")
+    p = L(application="Helper", decorator="decorator")
+    p.print(f"Print dictionary: {test_dict}")
+    p.bprint(f"Print dictionary: {test_dict}")
+    p.gprint(f"Print dictionary: {test_dict}")
+    p.rprint(f"Print dictionary: {test_dict}")
+    p.yprint(f"Print dictionary: {test_dict}")
+    p.print_error(test_dict)
+
+    print("\n==== Logs based on python logging. DEBUG is OFF + logging to file ====")
+    p = L(application="Helper_2", debug=False, init=True, decorator="decorator")
+    p.print(f"Print dictionary: {test_dict}")
+    p.bprint(f"Print dictionary: {test_dict}")
+    p.gprint(f"Print dictionary: {test_dict}")
+    p.rprint(f"Print dictionary: {test_dict}")
+    p.yprint(f"Print dictionary: {test_dict}")
+    p.print_error(test_dict)
+
 
 if __name__ == "__main__":
     main()
