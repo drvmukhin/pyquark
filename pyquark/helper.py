@@ -365,7 +365,7 @@ class L(object):
         handler_level = logging.DEBUG if debug else logging.WARNING
         if application in logging.Logger.manager.loggerDict.keys() and not init:
             self.logger = logging.getLogger(application)
-            self.logger.info(f'Logger "{application}" already exists. Using this logger')
+            # self.logger.info(f'Logger "{application}" already exists. Using this logger')
         else:
             self.logger = logging.getLogger(application)
             self.logger.setLevel(logger_level)  # Set's the root level for the logger. Handler can overwrite it
@@ -386,7 +386,7 @@ class L(object):
                 self.logger.addHandler(log_file_handler)
 
             """Print"""
-            self.logger.info(f'Logger "{application}" created.')
+            # self.logger.info(f'Logger "{application}" created.')
 
     @classmethod
     def app_index(cls):
