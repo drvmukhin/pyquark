@@ -332,10 +332,14 @@ class L(object):
     APPLICATION_INDEX = ""
     LOG_DIR = target_directory("logs")
     FORMAT = '{}{}'
+    DEFAULT_LOGGER_NAME = 'pyquark.sys'
+    LOG_FORMAT = logging.Formatter('[%(asctime)s] %(name)s: %(levelname)6s %(message)s', datefmt='%d/%b/%y %H:%M:%S')
 
     def __init__(self, 
-                 application: str = "Application", 
-                 debug: bool = True, 
+                 application: str = DEFAULT_LOGGER_NAME,
+                 debug: bool = True,
+                 log_to_file: bool = False,
+                 log_to_console: bool = True,
                  omit: bool = False, 
                  omit_all: bool = False,
                  native: bool = False,
@@ -351,6 +355,9 @@ class L(object):
         self.omit = omit if not omit_all else omit_all
         self.omit_all = omit_all
         self.debug = debug
+        self._log_file_name = ''
+        self.log_to_file = log_to_file
+        self.log_to_console = log_to_console
         if native:
             self.prefix = ''
         elif kwargs.get('inst'):
@@ -360,33 +367,49 @@ class L(object):
         else:
             self.prefix = logs_prefix(4, 2, decorator=decorator)
 
-        application = f"{application}_{self.app_index()}" if self.app_index() else application
-        logger_level = logging.DEBUG
-        handler_level = logging.DEBUG if debug else logging.WARNING
-        if application in logging.Logger.manager.loggerDict.keys() and not init:
-            self.logger = logging.getLogger(application)
-            # self.logger.info(f'Logger "{application}" already exists. Using this logger')
-        else:
-            self.logger = logging.getLogger(application)
-            self.logger.setLevel(logger_level)  # Set's the root level for the logger. Handler can overwrite it
-            log_format = logging.Formatter('[%(asctime)s] %(name)s: %(levelname)6s %(message)s', datefmt='%d/%b/%y %H:%M:%S')
-            """ Console handler """
-            log_con_handler = logging.StreamHandler()
-            log_con_handler.setFormatter(log_format)
-            log_con_handler.setLevel(handler_level)  # NOTSET(0),DEBUG(10),INFO(20),WARNING(30),ERROR(40),CRITICAL(50)
-            self.logger.addHandler(log_con_handler)
-            """ File handler """
-            if not self.debug:
-                self.log_file_name = f"{self.LOG_DIR}/{application.lower()}.log"
-                log_file_handler = logging.handlers.TimedRotatingFileHandler(filename=self.log_file_name,
-                                                                             when='midnight',
-                                                                             backupCount=30)
-                log_file_handler.setFormatter(log_format)
-                log_file_handler.setLevel(logging.INFO)  # DEBUG, INFO, WARNING, ERROR, CRITICAL
-                self.logger.addHandler(log_file_handler)
+        logger_name = f"{application}_{self.app_index()}" if self.app_index() else application
+        con_logger_name = f"{logger_name}_"
 
-            """Print"""
-            # self.logger.info(f'Logger "{application}" created.')
+        """ Define console logger: 
+                Note: We are using separate loggers for console and file modes to allow colored records in console.
+                Effectively we are sending a colored record to console logger and plain log record to the file logger.
+        """
+        if con_logger_name in logging.Logger.manager.loggerDict.keys() and not init:
+            self.con_logger = logging.getLogger(con_logger_name)
+        elif self.log_to_console:
+            self.con_logger = logging.getLogger(con_logger_name)
+            self.con_logger.setLevel(logging.DEBUG)  # Set's the root level for the logger. Handler can overwrite it
+            """ Console handler """
+            con_handler_level = logging.DEBUG if self.debug else logging.WARNING
+            log_con_handler = logging.StreamHandler()
+            log_con_handler.setFormatter(self.log_format)
+            log_con_handler.setLevel(con_handler_level)  # NOTSET(0),DEBUG(10),INFO(20),WARNING(30),ERROR(40),CRITICAL(50)
+            self.con_logger.addHandler(log_con_handler)
+        else:
+            self.con_logger = None
+
+        """Define file logger"""
+
+        if logger_name in logging.Logger.manager.loggerDict.keys() and not init:
+            self.logger = logging.getLogger(logger_name)
+        elif self.log_to_file:
+            self.logger = logging.getLogger(logger_name)
+            self.logger.setLevel(logging.DEBUG)  # Set's the root level for the logger. Handler can overwrite it
+            """ File handler """
+            handler_level = logging.DEBUG if self.debug else logging.INFO
+            self._log_file_name = f"{self.LOG_DIR}/{logger_name.lower()}.log"
+            log_file_handler = logging.handlers.TimedRotatingFileHandler(filename=self._log_file_name,
+                                                                         when='midnight',
+                                                                         backupCount=30)
+            log_file_handler.setFormatter(self.log_format)
+            log_file_handler.setLevel(handler_level)  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+            self.logger.addHandler(log_file_handler)
+        else:
+            self.logger = None
+
+    @property
+    def log_format(self):
+        return self.LOG_FORMAT
 
     @classmethod
     def app_index(cls):
@@ -396,54 +419,77 @@ class L(object):
     def set_app_index(cls, name: str):
         cls.APPLICATION_INDEX = name
 
+    @property
+    def log_file_name(self):
+        if self._log_file_name:
+            return self._log_file_name
+        if self.logger:
+            for handler in self.logger.handlers:
+                if handler.__dict__.get('baseFilename'):
+                    self._log_file_name = handler.__dict__['baseFilename']
+                    return self._log_file_name
+        return None
+
     def print(self, str_line, **kwargs):
         if self.omit:
             return
-        self.logger.debug(self.FORMAT.format(self.prefix, str_line))
+        if self.logger:
+            self.logger.debug(self.FORMAT.format(self.prefix, str_line))
+        if self.con_logger:
+            self.con_logger.debug(self.FORMAT.format(self.prefix, str_line))
 
     def rprint(self, str_line, **kwargs):
-        if self.debug:
-            str_line = rstring(self.FORMAT.format(self.prefix, str_line))
-            self.logger.warning(str_line)
-        else:
+        if self.logger:
             self.logger.warning(self.FORMAT.format(self.prefix, str_line))
+        if self.con_logger:
+            str_line = rstring(self.FORMAT.format(self.prefix, str_line))
+            self.con_logger.warning(str_line)
 
     def yprint(self, str_line, **kwargs):
         if self.omit_all:
             return
-        if self.debug:
-            str_line = ystring(self.FORMAT.format(self.prefix, str_line))
-            self.logger.info(str_line)
-        else:
+        if self.logger:
             self.logger.info(self.FORMAT.format(self.prefix, str_line))
+        if self.con_logger:
+            str_line = ystring(self.FORMAT.format(self.prefix, str_line))
+            self.con_logger.info(str_line)
 
     def bprint(self, str_line, **kwargs):
         if self.omit_all:
             return
-        if self.debug:
-            str_line = bstring(self.FORMAT.format(self.prefix, str_line))
-            self.logger.info(str_line)
-        else:
+        if self.logger:
             self.logger.info(self.FORMAT.format(self.prefix, str_line))
+
+        if self.con_logger:
+            str_line = bstring(self.FORMAT.format(self.prefix, str_line))
+            self.con_logger.info(str_line)
 
     def gprint(self, str_line, **kwargs):
         if self.omit_all:
             return
-        if self.debug:
-            str_line = gstring(self.FORMAT.format(self.prefix, str_line))
-            self.logger.info(str_line)
-        else:
+        if self.logger:
             self.logger.info(self.FORMAT.format(self.prefix, str_line))
 
-    def print_error(self, errors: dict):
-        for error_key, error_value in errors.items():
-            if error_key not in ('error', 'source', 'params'):
-                continue
-            if self.debug:
-                str_line = error_string('{}{}: {}'.format(self.prefix, str(error_key).capitalize(), error_value))
-                self.logger.error(str_line)
-            else:
-                self.logger.error('{}{}: {}'.format(self.prefix, str(error_key).capitalize(), error_value))
+        if self.con_logger:
+            str_line = gstring(self.FORMAT.format(self.prefix, str_line))
+            self.con_logger.info(str_line)
+
+    def print_error(self, errors):
+        if type(errors).__name__ == 'dict':
+            for error_key, error_value in errors.items():
+                if error_key not in ('error', 'source', 'params'):
+                    continue
+                if self.logger:
+                    self.logger.error('{}{}: {}'.format(self.prefix, str(error_key).capitalize(), error_value))
+                if self.con_logger:
+                    str_line = error_string('{}{}: {}'.format(self.prefix, str(error_key).capitalize(), error_value))
+                    self.con_logger.error(str_line)
+        else:
+            if self.logger:
+                self.logger.error(self.FORMAT.format(self.prefix, errors))
+            if self.con_logger:
+                str_line = rstring(self.FORMAT.format(self.prefix, errors))
+                self.con_logger.error(str_line)
 
 
 def slugify(value, allow_unicode=False):
@@ -463,6 +509,29 @@ def slugify(value, allow_unicode=False):
     return re.sub(r'[-\s]+', '_', value).strip('-_')
 
 
+class Log(L):
+
+    def __init__(self,
+                 application: str = L.DEFAULT_LOGGER_NAME,
+                 debug: bool = True,
+                 log_to_file: bool = True,
+                 log_to_console: bool = True,
+                 omit: bool = False,
+                 omit_all: bool = False,
+                 native: bool = False,
+                 decorator: str = "",
+                 **kwargs):
+        super(Log, self).__init__(application=application,
+                                  debug=debug,
+                                  omit=omit,
+                                  omit_all=omit_all,
+                                  native=native,
+                                  decorator=decorator,
+                                  log_to_file=log_to_file,
+                                  log_to_console=log_to_console,
+                                  **kwargs)
+
+
 def main():
     test_dict = {
         "a": "AA",
@@ -478,7 +547,8 @@ def main():
     p.print_error(test_dict)
 
     print("\n==== Logs based on python logging. DEBUG is ON =====")
-    p = L(application="Helper", decorator="decorator")
+    p = Log(decorator="debug_is_on")
+    p.print(f"Logger filename: {p.log_file_name}")
     p.print(f"Print dictionary: {test_dict}")
     p.bprint(f"Print dictionary: {test_dict}")
     p.gprint(f"Print dictionary: {test_dict}")
@@ -487,13 +557,14 @@ def main():
     p.print_error(test_dict)
 
     print("\n==== Logs based on python logging. DEBUG is OFF + logging to file ====")
-    L.set_app_index("3")
-    p = L(application="Helper", debug=False, init=True, decorator="decorator")
-    p.print(f"Print dictionary: {test_dict}")
-    p.bprint(f"Print dictionary: {test_dict}")
-    p.gprint(f"Print dictionary: {test_dict}")
-    p.rprint(f"Print dictionary: {test_dict}")
-    p.yprint(f"Print dictionary: {test_dict}")
+    Log.set_app_index("sys")
+    p = Log(application="Helper", debug=False, decorator="debug_is_off")
+    p.rprint(f"Logger filename: {p.log_file_name}")
+    p.print(f"print: Print dictionary: {test_dict}")
+    p.bprint(f"bprint: Print dictionary: {test_dict}")
+    p.gprint(f"gprint: Print dictionary: {test_dict}")
+    p.rprint(f"rprint: Print dictionary: {test_dict}")
+    p.yprint(f"yprint: Print dictionary: {test_dict}")
     p.print_error(test_dict)
 
 
