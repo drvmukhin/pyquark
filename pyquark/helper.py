@@ -345,6 +345,7 @@ class L(object):
                  native: bool = False,
                  decorator: str = "",
                  init: bool = False,
+                 log_dir: str = LOG_DIR,
                  **kwargs):
         """
         Parameters:
@@ -397,7 +398,7 @@ class L(object):
             self.logger.setLevel(logging.DEBUG)  # Set's the root level for the logger. Handler can overwrite it
             """ File handler """
             handler_level = logging.DEBUG if self.debug else logging.INFO
-            self._log_file_name = f"{self.LOG_DIR}/{logger_name.lower()}.log"
+            self._log_file_name = f"{log_dir}/{logger_name.lower()}.log"
             log_file_handler = logging.handlers.TimedRotatingFileHandler(filename=self._log_file_name,
                                                                          when='midnight',
                                                                          backupCount=30)
