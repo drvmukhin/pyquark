@@ -198,13 +198,18 @@ def is_mac(mac_addr):
 
 
 def switch(func):
+    """
+    Decorates set attribute functions:
+    - Converts "ON"/"OFF" string value into Boolean values and
+    - saves value into object attribute if attribute exists
+    """
     def func_wrapper(self, value, **kwargs):
         p = P(inst=self, decorator='switch', omit=True)
         cls = self.__class__
         ON = self.ON.lower() if getattr(self, 'ON') else 'yes'
         OFF = self.OFF.lower() if getattr(self, 'OFF') else 'no'
         attr_name = func.__name__.replace('set_', '')
-        if value.__class__.__name__ == 'bool':
+        if isinstance(value, bool):
             pass
         elif value.lower() == ON:
             value = True
@@ -219,6 +224,28 @@ def switch(func):
         return func(self, value, **kwargs)
     return func_wrapper
 
+
+def switch2(func):
+    """
+    Decorates set attribute functions:
+    - Same as switch, but doesn't automatically saves values into object attribute.
+    """
+    def func_wrapper(self, value, **kwargs):
+        p = P(inst=self, decorator='switch', omit=True)
+        ON = self.ON.lower() if getattr(self, 'ON') else 'yes'
+        OFF = self.OFF.lower() if getattr(self, 'OFF') else 'no'
+        if isinstance(value, bool):
+            pass
+        elif value.lower() == ON:
+            value = True
+        elif value.lower() == OFF:
+            value = False
+        else:
+            error = 'Error: wrong "switch" attribute (value = {}). {} or {} is expected.'
+            p.rprint(error.format(value, ON, OFF))
+            return None
+        return func(self, value, **kwargs)
+    return func_wrapper
 
 def clean_select_field(self, choices, forms, error_message):
     p = P(inst=self, omit=True)
