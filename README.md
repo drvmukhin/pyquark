@@ -11,5 +11,6 @@ Logging to file disabled by default and can be enabled by setting log_to_file at
 to False will decrease the logging level to file to INFO level. 
 v.0.3.5: Use log_dir parameter of the __inti__ to define a custom logs directory
 v.0.3.6: @switch2 decorator (modification of the @switch) defined
+v.0.3.7: '__call__' name added to the list of functions names excluded from the logger prefix 
 
 
