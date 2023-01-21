@@ -146,6 +146,8 @@ def logs_prefix(*args, **kwargs):
         memorized_name = name
         frames.append(name)
         i += 1
+    if not frames:
+        frames = ['main']
     frames.reverse()
 
     for name in frames:
