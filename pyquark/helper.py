@@ -139,7 +139,7 @@ def logs_prefix(*args, **kwargs):
         try:
             name = str(sys._getframe(i).f_code.co_name)
         except Exception as e:
-            print('{}'.format(e))
+            print('{}:{}'.format(type(e), e))
             break
         if type(name).__name__ == 'NoneType' or name == memorized_name or name in excludes:
             i += 1
