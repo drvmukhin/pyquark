@@ -138,8 +138,7 @@ def logs_prefix(*args, **kwargs):
     while True:
         try:
             name = str(sys._getframe(i).f_code.co_name)
-        except Exception as e:
-            print('{}:{}'.format(type(e), e))
+        except ValueError:
             break
         if type(name).__name__ == 'NoneType' or name == memorized_name or name in excludes:
             i += 1
