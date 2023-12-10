@@ -5,9 +5,21 @@ import re
 import os
 import logging
 import logging.handlers
+import time
 from datetime import datetime
 from threading import Thread
 from typing import Optional
+
+def exec_time(func):
+    """Apply as decorator to any method to measure its exec time"""
+    def wrapper(*args, **kwargs):
+        start_time = time.perf_counter()
+        result = func(*args, **kwargs)
+        end_time = time.perf_counter()
+        execution_time = end_time - start_time
+        print(f"Execution time of {func.__name__}: {execution_time:.6f} seconds")
+        return result
+    return wrapper
 
 
 def target_directory(output_path: Optional[str] = None) -> str:
