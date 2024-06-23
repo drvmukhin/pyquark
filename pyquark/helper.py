@@ -130,6 +130,45 @@ def rprint(string):
 def print_error(string):
     print("{}{}{}".format(bcolors.FAIL, string, bcolors.ENDC))
 
+def print_dict(info_string, data, indent=0, color=None):
+    """
+    This function is used to print a dictionary in a structured way. It handles nested dictionaries, lists, tuples, sets, and frozensets.
+    It recursively prints the nested data structures with increased indentation.
+
+    Parameters:
+    info_string (str): The information string to be printed before the data structure.
+    data (dict or list or tuple or set or frozenset): The data structure to be printed.
+    indent (int): The indentation level for the current data structure. Default is 0.
+    color (str): The color of the printed text. Default is None.
+
+    Returns:
+    None
+    """
+    color_print = {
+        'g': gprint,
+        'r': rprint,
+        'b': bprint,
+        'y': yprint
+    }.get(color, print)
+
+    color_print(info_string)
+    if isinstance(data, dict):
+        for key, value in data.items():
+            if not isinstance(value, (dict, list, tuple, set, frozenset)):
+                print(" " * indent + str(key) + ": " + str(value))
+            else:
+                print(" " * indent + str(key) + f":<{type(value).__name__}>")
+                print_dict("", value, indent + 4)
+    elif isinstance(data, (list, tuple, set, frozenset)):
+        for index, item in enumerate(data):
+            if not isinstance(item, (dict, list, tuple, set, frozenset)):
+                print(" " * indent + "[" + str(index) + "]: " + str(item))
+            else:
+                print(" " * indent + "[" + str(index) + "]:" + f"<{type(item).__name__}>" )
+                print_dict("", item, indent + 4)
+    else:
+        print(" " * indent + str(data))
+
 
 def logs_prefix(*args, **kwargs):
     _func_ = ''
