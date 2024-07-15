@@ -303,6 +303,27 @@ def switch2(func):
         return func(self, value, **kwargs)
     return func_wrapper
 
+
+def switch_reverse_yesno(func):
+    """
+    Decorates get attribute functions:
+    - Converts Boolean values into "ON"/"OFF" string values
+    """
+    def func_wrapper(self, **kwargs):
+        p = P(inst=self, decorator='switch', omit=True)
+        cls = self.__class__
+        ON = self.ON.lower() if getattr(self, 'ON') else 'yes'
+        OFF = self.OFF.lower() if getattr(self, 'OFF') else 'no'
+        attr_name = func.__name__.replace('get_', '')
+        value = func(self, **kwargs)
+        if isinstance(value, bool):
+            return ON if value else OFF
+        else:
+            p.rprint(f'Error: wrong "{attr_name}" switch attribute (value = {value}). Boolean is expected.')
+            return None
+    return func_wrapper
+
+
 def clean_select_field(self, choices, forms, error_message):
     p = P(inst=self, omit=True)
     _func_name_ = str(sys._getframe(1).f_code.co_name)
