@@ -286,6 +286,7 @@ def switch2(func):
     Decorates set attribute functions:
     - Same as switch, but doesn't automatically saves values into object attribute.
     """
+
     def func_wrapper(self, value, **kwargs):
         p = P(inst=self, decorator='switch', omit=True)
         ON = self.ON.lower() if getattr(self, 'ON') else 'yes'
@@ -300,7 +301,12 @@ def switch2(func):
             error = 'Error: wrong "switch" attribute (value = {}). {} or {} is expected.'
             p.rprint(error.format(value, ON, OFF))
             return None
+
+        # Save attribute name for further processing by the stacked decorators (if any)
+        kwargs['_attr_name_'] = func.__name__.replace('set_', '')
+
         return func(self, value, **kwargs)
+
     return func_wrapper
 
 
@@ -309,8 +315,9 @@ def switch_reverse_yesno(func):
     Decorates get attribute functions:
     - Converts Boolean values into "ON"/"OFF" string values
     """
+
     def func_wrapper(self, **kwargs):
-        p = P(inst=self, decorator='switch', omit=True)
+        p = P(inst=self, decorator='switch_reverse_yesno', omit=True)
         cls = self.__class__
         ON = self.ON.lower() if getattr(self, 'ON') else 'yes'
         OFF = self.OFF.lower() if getattr(self, 'OFF') else 'no'
@@ -321,6 +328,7 @@ def switch_reverse_yesno(func):
         else:
             p.rprint(f'Error: wrong "{attr_name}" switch attribute (value = {value}). Boolean is expected.')
             return None
+
     return func_wrapper
 
 
