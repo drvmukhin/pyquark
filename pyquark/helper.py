@@ -253,6 +253,15 @@ def is_mac(mac_addr):
         return False
 
 
+def yesno(value):
+    if value == 'yes':
+        return True
+    elif value == 'no':
+        return False
+    else:
+        return None
+
+
 def switch(func):
     """
     Decorates set attribute functions:
