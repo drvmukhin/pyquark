@@ -391,6 +391,9 @@ def start_as_thread(func):
 
 
 class P(object):
+    """
+    Class for colored print methods
+    """
     FORMAT = '[{}] {}{}'
 
     def __init__(self, **kwargs):
@@ -448,6 +451,9 @@ class P(object):
 
 
 class L(object):
+    """
+    Class for colored print methods and logging
+    """
 
     ERROR_FILE = "app_errors.log"
     APPLICATION_INDEX = ""
@@ -555,6 +561,11 @@ class L(object):
     def print(self, str_line, **kwargs):
         if self.omit:
             return
+
+        # Evaluate str_line only if needed, assuming str_line could be a callable
+        if callable(str_line):
+            str_line = str_line()  # Evaluate only when required
+
         if self.logger:
             self.logger.debug(self.FORMAT.format(self.prefix, str_line))
         if self.con_logger:
@@ -570,6 +581,11 @@ class L(object):
     def yprint(self, str_line, **kwargs):
         if self.omit_all:
             return
+
+        # Evaluate str_line only if needed, assuming str_line could be a callable
+        if callable(str_line):
+            str_line = str_line()  # Evaluate only when required
+
         if self.logger:
             self.logger.info(self.FORMAT.format(self.prefix, str_line))
         if self.con_logger:
@@ -579,6 +595,11 @@ class L(object):
     def bprint(self, str_line, **kwargs):
         if self.omit_all:
             return
+
+        # Evaluate str_line only if needed, assuming str_line could be a callable
+        if callable(str_line):
+            str_line = str_line()  # Evaluate only when required
+
         if self.logger:
             self.logger.info(self.FORMAT.format(self.prefix, str_line))
 
@@ -589,6 +610,11 @@ class L(object):
     def gprint(self, str_line, **kwargs):
         if self.omit_all:
             return
+
+        # Evaluate str_line only if needed, assuming str_line could be a callable
+        if callable(str_line):
+            str_line = str_line()  # Evaluate only when required
+
         if self.logger:
             self.logger.info(self.FORMAT.format(self.prefix, str_line))
 
@@ -670,9 +696,9 @@ def main():
 
     print("\n==== Logs based on python logging. DEBUG is ON =====")
     p = Log(decorator="debug_is_on")
-    p.print(f"Logger filename: {p.log_file_name}")
-    p.print(f"Print dictionary: {test_dict}")
-    p.bprint(f"Print dictionary: {test_dict}")
+    p.print(lambda: f"Logger filename: {p.log_file_name}")
+    p.print(lambda: f"Print dictionary: {test_dict}")
+    p.bprint(lambda: f"Print dictionary: {test_dict}")
     p.gprint(f"Print dictionary: {test_dict}")
     p.rprint(f"Print dictionary: {test_dict}")
     p.yprint(f"Print dictionary: {test_dict}")

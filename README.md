@@ -1,4 +1,6 @@
-# pyquark
+# Pyquark Project
+
+## Release Notes
 - v.0.2.4: Fixes error when trying to print "list" or "dict" objects with colored print methods
 - v.0.3.1: Added class L (logging) based on pythin logging library. Allows console and file logging
 - v.0.3.2: Allows to programmatically add <app_index> into application name, which allows to run multiple instances of the script writing into different log_files "<application_name>_<app_index>.log"
@@ -9,3 +11,14 @@
 - v.0.3.9: Added print_dict to print complex data structures in a more readable way
 - v.0.3.10: Added switch_reverse_yesno decorator. Allows to switch the return value of the decorated function from Boolean to Yes/No string.
 - v.0.3.11 Added yesno() method.
+- v.0.3.12: Added a lazy capability into Logger class L. 
+
+## Lazy logging
+With "lazy evaluation," you can use a lambda function (or another callable) to delay the evaluation of str_line until it's actually needed. This way, when self.omit is True, the str_line will not be generated or evaluated at all, saving compute cycles.
+
+When calling print, you can pass str_line as a lambda or function if it contains computations or formatting that should only be done when logging is enabled. For example:
+
+```python
+# Use a lambda to delay formatting until print is called
+obj.print(lambda: "Result: {}".format(expensive_computation()))
+```
