@@ -1,0 +1,18 @@
+[11/Nov/24 13:08:00] Helper_sys: WARNING [main.debug_is_off]  Logger filename: /home/vasily/PycharmProjects/my_packages/pyquark/logs/helper_sys.log
+[11/Nov/24 13:08:00] Helper_sys:   INFO [main.debug_is_off]  bprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:08:00] Helper_sys:   INFO [main.debug_is_off]  gprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:08:00] Helper_sys: WARNING [main.debug_is_off]  rprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:08:00] Helper_sys:   INFO [main.debug_is_off]  yprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:08:00] Helper_sys:  ERROR [main.debug_is_off]  Error: Print my error
+[11/Nov/24 13:10:00] Helper_sys: WARNING [main.debug_is_off]  Logger filename: /home/vasily/PycharmProjects/my_packages/pyquark/logs/helper_sys.log
+[11/Nov/24 13:10:00] Helper_sys:   INFO [main.debug_is_off]  bprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:10:00] Helper_sys:   INFO [main.debug_is_off]  gprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:10:00] Helper_sys: WARNING [main.debug_is_off]  rprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:10:00] Helper_sys:   INFO [main.debug_is_off]  yprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:10:00] Helper_sys:  ERROR [main.debug_is_off]  Error: Print my error
+[11/Nov/24 13:11:02] Helper_sys: WARNING [main.debug_is_off]  Logger filename: /home/vasily/PycharmProjects/my_packages/pyquark/logs/helper_sys.log
+[11/Nov/24 13:11:02] Helper_sys:   INFO [main.debug_is_off]  bprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:11:02] Helper_sys:   INFO [main.debug_is_off]  gprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:11:02] Helper_sys: WARNING [main.debug_is_off]  rprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:11:02] Helper_sys:   INFO [main.debug_is_off]  yprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:11:02] Helper_sys:  ERROR [main.debug_is_off]  Error: Print my error

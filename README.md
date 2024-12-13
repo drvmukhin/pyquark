@@ -11,7 +11,8 @@
 - v.0.3.9: Added print_dict to print complex data structures in a more readable way
 - v.0.3.10: Added switch_reverse_yesno decorator. Allows to switch the return value of the decorated function from Boolean to Yes/No string.
 - v.0.3.11 Added yesno() method.
-- v.0.3.12: Added a lazy capability into Logger class L. 
+- v.0.3.12: Added a lazy capability into Logger class L.
+- v.0.3.13: log prefix is dynamically substitute on each xprint function call (class L only).
 
 ## Lazy logging
 With "lazy evaluation," you can use a lambda function (or another callable) to delay the evaluation of str_line until it's actually needed. This way, when self.omit is True, the str_line will not be generated or evaluated at all, saving compute cycles.

@@ -1,0 +1,19 @@
+[11/Nov/24 13:08:00] pyquark.sys:  DEBUG [main.debug_is_on]  Logger filename: /home/vasily/PycharmProjects/my_packages/pyquark/logs/pyquark.sys.log
+[11/Nov/24 13:08:00] pyquark.sys:  DEBUG [main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:08:00] pyquark.sys:   INFO [main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:08:00] pyquark.sys:   INFO [main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:08:00] pyquark.sys: WARNING [main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:08:00] pyquark.sys:   INFO [main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:08:00] pyquark.sys:  ERROR [main.debug_is_on]  Error: Print my error
+[11/Nov/24 13:10:00] pyquark.sys:   INFO [main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:10:00] pyquark.sys:   INFO [main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:10:00] pyquark.sys: WARNING [main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:10:00] pyquark.sys:   INFO [main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:10:00] pyquark.sys:  ERROR [main.debug_is_on]  Error: Print my error
+[11/Nov/24 13:11:02] pyquark.sys:  DEBUG [main.debug_is_on]  Logger filename: /home/vasily/PycharmProjects/my_packages/pyquark/logs/pyquark.sys.log
+[11/Nov/24 13:11:02] pyquark.sys:  DEBUG [main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:11:02] pyquark.sys:   INFO [main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:11:02] pyquark.sys:   INFO [main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:11:02] pyquark.sys: WARNING [main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:11:02] pyquark.sys:   INFO [main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[11/Nov/24 13:11:02] pyquark.sys:  ERROR [main.debug_is_on]  Error: Print my error

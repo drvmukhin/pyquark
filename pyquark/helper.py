@@ -76,7 +76,7 @@ stop character, where the system should stop and parse the \033[ syntax.
 \033[2K - erases everything written on line before this.
 """
 
-class bcolors:
+class Bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'
@@ -89,46 +89,46 @@ class bcolors:
 
 
 def rstring(string):
-    return "{}{}{}".format(bcolors.RED, string, bcolors.ENDC)
+    return "{}{}{}".format(Bcolors.RED, string, Bcolors.ENDC)
 
 
 def gstring(string):
-    return "{}{}{}".format(bcolors.OKGREEN, string, bcolors.ENDC)
+    return "{}{}{}".format(Bcolors.OKGREEN, string, Bcolors.ENDC)
 
 
 def bstring(string):
-    return "{}{}{}".format(bcolors.OKBLUE, string, bcolors.ENDC)
+    return "{}{}{}".format(Bcolors.OKBLUE, string, Bcolors.ENDC)
 
 
 def ystring(string, **kwargs):
-    return "{}{}{}".format(bcolors.WARNING, string, bcolors.ENDC)
+    return "{}{}{}".format(Bcolors.WARNING, string, Bcolors.ENDC)
 
 
 def error_string(string):
-    return "{}{}{}".format(bcolors.FAIL, string, bcolors.ENDC)
+    return "{}{}{}".format(Bcolors.FAIL, string, Bcolors.ENDC)
 
 
 def gprint(string):
-    print("{}{}{}".format(bcolors.OKGREEN, string, bcolors.ENDC))
+    print("{}{}{}".format(Bcolors.OKGREEN, string, Bcolors.ENDC))
 
 
 def bprint(string):
-    print("{}{}{}".format(bcolors.OKBLUE, string, bcolors.ENDC))
+    print("{}{}{}".format(Bcolors.OKBLUE, string, Bcolors.ENDC))
 
 
 def yprint(string, **kwargs):
     if kwargs and kwargs.get('end') == "":
-        print("{}{}{}".format(bcolors.WARNING, string, bcolors.ENDC), end="")
+        print("{}{}{}".format(Bcolors.WARNING, string, Bcolors.ENDC), end="")
     else:
-        print("{}{}{}".format(bcolors.WARNING, string, bcolors.ENDC))
+        print("{}{}{}".format(Bcolors.WARNING, string, Bcolors.ENDC))
 
 
 def rprint(string):
-    print("{}{}{}".format(bcolors.RED, string, bcolors.ENDC))
+    print("{}{}{}".format(Bcolors.RED, string, Bcolors.ENDC))
 
 
 def print_error(string):
-    print("{}{}{}".format(bcolors.FAIL, string, bcolors.ENDC))
+    print("{}{}{}".format(Bcolors.FAIL, string, Bcolors.ENDC))
 
 def print_dict(info_string, data, indent=0, color=None):
     """
@@ -410,6 +410,9 @@ class P(object):
         if kwargs.get('omit_all'):
             self.omit = True
             self.omit_all = True
+        self.decorator = kwargs.get('decorator') if kwargs.get('decorator') else None
+        self.native = kwargs.get('native') if kwargs.get('native') else False
+        self.inst_class = kwargs['inst'] if kwargs.get('inst') else kwargs['cls'] if kwargs.get('cls') else ''
         if kwargs.get('native'):
             self.prefix = ''
         elif kwargs.get('inst'):
@@ -418,6 +421,8 @@ class P(object):
             self.prefix = logs_prefix(4, 2, cls=kwargs['cls'], decorator=kwargs.get('decorator'))
         else:
             self.prefix = logs_prefix(4, 2, decorator=kwargs.get('decorator'))
+
+
 
     def print(self, str_line, **kwargs):
         if self.omit:
@@ -486,14 +491,20 @@ class L(object):
         self._log_file_name = ''
         self.log_to_file = log_to_file
         self.log_to_console = log_to_console
-        if native:
-            self.prefix = ''
-        elif kwargs.get('inst'):
-            self.prefix = logs_prefix(4, 2, self=kwargs['inst'], decorator=decorator)
-        elif kwargs.get('cls'):
-            self.prefix = logs_prefix(4, 2, cls=kwargs['cls'], decorator=decorator)
-        else:
-            self.prefix = logs_prefix(4, 2, decorator=decorator)
+        self.decorator = kwargs.get('decorator')
+        self.native = kwargs.get('native', False)
+        self.inst_class = kwargs.get('cls')
+        self.inst = kwargs.get('inst')
+        self._prefix = ''
+
+        # if native:
+        #     self._prefix = ''
+        # elif kwargs.get('inst'):
+        #     self._prefix = logs_prefix(4, 2, self=kwargs['inst'], decorator=decorator)
+        # elif kwargs.get('cls'):
+        #     self._prefix = logs_prefix(4, 2, cls=kwargs['cls'], decorator=decorator)
+        # else:
+        #     self._prefix = logs_prefix(4, 2, decorator=decorator)
 
         logger_name = f"{application}_{self.app_index()}" if self.app_index() else application
         con_logger_name = f"{logger_name}_"
@@ -534,6 +545,19 @@ class L(object):
             self.logger.addHandler(log_file_handler)
         else:
             self.logger = None
+
+    @property
+    def prefix(self):
+        if self.native:
+            self._prefix = ''
+        elif self.inst:
+            self._prefix = logs_prefix(5, 3, self=self.inst, decorator=self.decorator)
+        elif self.inst_class:
+            self._prefix = logs_prefix(5, 3, cls=self.inst_class, decorator=self.decorator)
+        else:
+            self._prefix = logs_prefix(5, 3, decorator=self.decorator)
+
+        return self._prefix
 
     @property
     def log_format(self):
@@ -687,7 +711,7 @@ def main():
         "error": "Print my error"
     }
     print("==== Standard colored print methods ====")
-    p = P(decorator="decorator")
+    p = P(cls=Bcolors, decorator="decorator")
     p.bprint(f"{test_dict}")
     p.gprint(f"{test_dict}")
     p.rprint(f"{test_dict}")
@@ -695,7 +719,7 @@ def main():
     p.print_error(test_dict)
 
     print("\n==== Logs based on python logging. DEBUG is ON =====")
-    p = Log(decorator="debug_is_on")
+    p = Log(cls=Bcolors, decorator="debug_is_on")
     p.print(lambda: f"Logger filename: {p.log_file_name}")
     p.print(lambda: f"Print dictionary: {test_dict}")
     p.bprint(lambda: f"Print dictionary: {test_dict}")
@@ -706,7 +730,7 @@ def main():
 
     print("\n==== Logs based on python logging. DEBUG is OFF + logging to file ====")
     Log.set_app_index("sys")
-    p = Log(application="Helper", debug=False, decorator="debug_is_off")
+    p = Log(inst=Bcolors(), application="Helper", debug=False, decorator="debug_is_off")
     p.rprint(f"Logger filename: {p.log_file_name}")
     p.print(f"print: Print dictionary: {test_dict}")
     p.bprint(f"bprint: Print dictionary: {test_dict}")
