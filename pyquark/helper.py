@@ -185,7 +185,7 @@ def logs_prefix(*args, **kwargs):
     i = 1 if not args or len(args) < 2 else args[1]
     imax = 3 if not args else args[0]
     memorized_name = None
-    excludes = ('dispatch', 'view', 'func_wrapper', 'inner', '__init__', '__call__')
+    excludes = ('dispatch', 'view', 'func_wrapper', 'wrapper', 'inner', '__init__', '__call__')
     while True:
         try:
             name = str(sys._getframe(i).f_code.co_name)
