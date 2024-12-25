@@ -1,0 +1,72 @@
+[12/Dec/24 21:44:57] Helper_sys: WARNING [main.rprint]  Logger filename: /home/vasily/PycharmProjects/my_packages/pyquark/logs/helper_sys.log
+[12/Dec/24 21:44:57] Helper_sys:   INFO [main.bprint]  bprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:44:57] Helper_sys:   INFO [main.gprint]  gprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:44:57] Helper_sys: WARNING [main.rprint]  rprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:44:57] Helper_sys:   INFO [main.yprint]  yprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:44:57] Helper_sys:  ERROR [main.print_error]  Error: Print my error
+[12/Dec/24 21:45:34] Helper_sys: WARNING [main.rprint]  Logger filename: /home/vasily/PycharmProjects/my_packages/pyquark/logs/helper_sys.log
+[12/Dec/24 21:45:34] Helper_sys:   INFO [main.bprint]  bprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:45:34] Helper_sys:   INFO [main.gprint]  gprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:45:34] Helper_sys: WARNING [main.rprint]  rprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:45:34] Helper_sys:   INFO [main.yprint]  yprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:45:34] Helper_sys:  ERROR [main.print_error]  Error: Print my error
+[12/Dec/24 21:46:15] Helper_sys: WARNING [main.rprint]  Logger filename: /home/vasily/PycharmProjects/my_packages/pyquark/logs/helper_sys.log
+[12/Dec/24 21:46:15] Helper_sys:   INFO [main.bprint]  bprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:46:15] Helper_sys:   INFO [main.gprint]  gprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:46:15] Helper_sys: WARNING [main.rprint]  rprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:46:15] Helper_sys:   INFO [main.yprint]  yprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:46:15] Helper_sys:  ERROR [main.print_error]  Error: Print my error
+[12/Dec/24 21:46:51] Helper_sys: WARNING [Bcolors.main.rprint]  Logger filename: /home/vasily/PycharmProjects/my_packages/pyquark/logs/helper_sys.log
+[12/Dec/24 21:46:51] Helper_sys:   INFO [Bcolors.main.bprint]  bprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:46:51] Helper_sys:   INFO [Bcolors.main.gprint]  gprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:46:51] Helper_sys: WARNING [Bcolors.main.rprint]  rprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:46:51] Helper_sys:   INFO [Bcolors.main.yprint]  yprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:46:51] Helper_sys:  ERROR [Bcolors.main.print_error]  Error: Print my error
+[12/Dec/24 21:47:07] Helper_sys: WARNING [Bcolors.main.rprint]  Logger filename: /home/vasily/PycharmProjects/my_packages/pyquark/logs/helper_sys.log
+[12/Dec/24 21:47:07] Helper_sys:   INFO [Bcolors.main.bprint]  bprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:47:07] Helper_sys:   INFO [Bcolors.main.gprint]  gprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:47:07] Helper_sys: WARNING [Bcolors.main.rprint]  rprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:47:07] Helper_sys:   INFO [Bcolors.main.yprint]  yprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:47:07] Helper_sys:  ERROR [Bcolors.main.print_error]  Error: Print my error
+[12/Dec/24 21:54:11] Helper_sys: WARNING [Bcolors.main.rprint]  Logger filename: /home/vasily/PycharmProjects/my_packages/pyquark/logs/helper_sys.log
+[12/Dec/24 21:54:11] Helper_sys:   INFO [Bcolors.main.bprint]  bprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:54:11] Helper_sys:   INFO [Bcolors.main.gprint]  gprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:54:11] Helper_sys: WARNING [Bcolors.main.rprint]  rprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:54:11] Helper_sys:   INFO [Bcolors.main.yprint]  yprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 21:54:11] Helper_sys:  ERROR [Bcolors.main.print_error]  Error: Print my error
+[12/Dec/24 22:00:09] Helper_sys: WARNING [Bcolors.main.rprint]  Logger filename: /home/vasily/PycharmProjects/my_packages/pyquark/logs/helper_sys.log
+[12/Dec/24 22:00:09] Helper_sys:   INFO [Bcolors.main.bprint]  bprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:00:09] Helper_sys:   INFO [Bcolors.main.gprint]  gprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:00:09] Helper_sys: WARNING [Bcolors.main.rprint]  rprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:00:09] Helper_sys:   INFO [Bcolors.main.yprint]  yprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:00:09] Helper_sys:  ERROR [Bcolors.main.print_error]  Error: Print my error
+[12/Dec/24 22:02:33] Helper_sys: WARNING [Bcolors.main.rprint]  Logger filename: /home/vasily/PycharmProjects/my_packages/pyquark/logs/helper_sys.log
+[12/Dec/24 22:02:33] Helper_sys:   INFO [Bcolors.main.bprint]  bprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:02:33] Helper_sys:   INFO [Bcolors.main.gprint]  gprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:02:33] Helper_sys: WARNING [Bcolors.main.rprint]  rprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:02:33] Helper_sys:   INFO [Bcolors.main.yprint]  yprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:02:33] Helper_sys:  ERROR [Bcolors.main.print_error]  Error: Print my error
+[12/Dec/24 22:05:23] Helper_sys: WARNING [Bcolors.main.rprint]  Logger filename: /home/vasily/PycharmProjects/my_packages/pyquark/logs/helper_sys.log
+[12/Dec/24 22:05:23] Helper_sys:   INFO [Bcolors.main.bprint]  bprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:05:23] Helper_sys:   INFO [Bcolors.main.gprint]  gprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:05:23] Helper_sys: WARNING [Bcolors.main.rprint]  rprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:05:23] Helper_sys:   INFO [Bcolors.main.yprint]  yprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:05:23] Helper_sys:  ERROR [Bcolors.main.print_error]  Error: Print my error
+[12/Dec/24 22:05:58] Helper_sys: WARNING [Bcolors.main.rprint]  Logger filename: /home/vasily/PycharmProjects/my_packages/pyquark/logs/helper_sys.log
+[12/Dec/24 22:05:58] Helper_sys:   INFO [Bcolors.main.bprint]  bprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:05:58] Helper_sys:   INFO [Bcolors.main.gprint]  gprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:05:58] Helper_sys: WARNING [Bcolors.main.rprint]  rprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:05:58] Helper_sys:   INFO [Bcolors.main.yprint]  yprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:05:58] Helper_sys:  ERROR [Bcolors.main.print_error]  Error: Print my error
+[12/Dec/24 22:08:22] Helper_sys: WARNING [Bcolors.main]  Logger filename: /home/vasily/PycharmProjects/my_packages/pyquark/logs/helper_sys.log
+[12/Dec/24 22:08:22] Helper_sys:   INFO [Bcolors.main]  bprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:08:22] Helper_sys:   INFO [Bcolors.main]  gprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:08:22] Helper_sys: WARNING [Bcolors.main]  rprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:08:22] Helper_sys:   INFO [Bcolors.main]  yprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:08:22] Helper_sys:  ERROR [Bcolors.main]  Error: Print my error
+[12/Dec/24 22:08:50] Helper_sys: WARNING [Bcolors.main]  Logger filename: /home/vasily/PycharmProjects/my_packages/pyquark/logs/helper_sys.log
+[12/Dec/24 22:08:50] Helper_sys:   INFO [Bcolors.main]  bprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:08:50] Helper_sys:   INFO [Bcolors.main]  gprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:08:50] Helper_sys: WARNING [Bcolors.main]  rprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:08:50] Helper_sys:   INFO [Bcolors.main]  yprint: Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[12/Dec/24 22:08:50] Helper_sys:  ERROR [Bcolors.main]  Error: Print my error

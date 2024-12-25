@@ -491,8 +491,8 @@ class L(object):
         self._log_file_name = ''
         self.log_to_file = log_to_file
         self.log_to_console = log_to_console
-        self.decorator = kwargs.get('decorator')
-        self.native = kwargs.get('native', False)
+        self.decorator = decorator
+        self.native = native
         self.inst_class = kwargs.get('cls')
         self.inst = kwargs.get('inst')
         self._prefix = ''
