@@ -14,6 +14,7 @@
 - v.0.3.12: Added a lazy capability into Logger class L.
 - v.0.3.13: log prefix is dynamically substitute on each xprint function call (class L only).
 - v.0.3.14: Decorator param has no effect on prefix lod. Fixed
+- v.0.3.15: Added utils.py file with utility functions. get_parent_path(path, levels_up) added.
 
 ## Lazy logging
 With "lazy evaluation," you can use a lambda function (or another callable) to delay the evaluation of str_line until it's actually needed. This way, when self.omit is True, the str_line will not be generated or evaluated at all, saving compute cycles.
