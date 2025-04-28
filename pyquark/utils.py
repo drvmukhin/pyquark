@@ -20,3 +20,24 @@ def exec_time(func):
         print(f"Execution time of {func.__name__}: {execution_time:.6f} seconds")
         return result
     return wrapper
+
+
+def find_parent_path(path, target_folder, logger=None):
+    # Find the parent path that contains the target folder
+    current_path = path
+    max_level = 50
+    nCount = 0
+    while True:
+        if os.path.basename(current_path) == target_folder:
+            return current_path
+        current_path = os.path.dirname(current_path)
+        if not current_path:  # Reached the root directory
+            break
+        nCount += 1
+        if nCount > max_level:
+            if logger:
+                logger.rprint(f"Max level {max_level} reached. Stopping search.")
+            else:
+                print(f"Max level {max_level} reached. Stopping search.")
+            break
+    return None

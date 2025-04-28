@@ -1,6 +1,6 @@
 import setuptools
 setuptools.setup(name='pyquark',
-version='0.3.15',
+version='0.3.16',
 description='Helper utilities',
 url='https://github.com/drvmukhin/pyquark.git',
 author='vmukhin.dev',
