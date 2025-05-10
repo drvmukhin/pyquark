@@ -1,14 +1,10 @@
-[24/Dec/24 17:28:52] pyquark.sys:  DEBUG [Bcolors.main]  Logger filename: /home/vasily/PycharmProjects/my_packages/pyquark/logs/pyquark.sys.log
-[24/Dec/24 17:28:52] pyquark.sys:  DEBUG [Bcolors.main]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
-[24/Dec/24 17:28:52] pyquark.sys:   INFO [Bcolors.main]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
-[24/Dec/24 17:28:52] pyquark.sys:   INFO [Bcolors.main]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
-[24/Dec/24 17:28:52] pyquark.sys: WARNING [Bcolors.main]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
-[24/Dec/24 17:28:52] pyquark.sys:   INFO [Bcolors.main]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
-[24/Dec/24 17:28:52] pyquark.sys:  ERROR [Bcolors.main]  Error: Print my error
-[24/Dec/24 17:32:58] pyquark.sys:  DEBUG [Bcolors.main.debug_is_on]  Logger filename: /home/vasily/PycharmProjects/my_packages/pyquark/logs/pyquark.sys.log
-[24/Dec/24 17:32:58] pyquark.sys:  DEBUG [Bcolors.main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
-[24/Dec/24 17:32:58] pyquark.sys:   INFO [Bcolors.main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
-[24/Dec/24 17:32:58] pyquark.sys:   INFO [Bcolors.main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
-[24/Dec/24 17:32:58] pyquark.sys: WARNING [Bcolors.main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
-[24/Dec/24 17:32:58] pyquark.sys:   INFO [Bcolors.main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
-[24/Dec/24 17:32:58] pyquark.sys:  ERROR [Bcolors.main.debug_is_on]  Error: Print my error
+[10/May/25 16:28:26] pyquark.sys:  DEBUG [Bcolors.main.debug_is_on]  Logger filename: /home/vasily/PycharmProjects/my_packages/pyquark/logs/pyquark.sys.log
+[10/May/25 16:28:26] pyquark.sys:  DEBUG [Bcolors.main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[10/May/25 16:28:43] pyquark.sys:  DEBUG [Bcolors.main.debug_is_on]  Logger filename: /home/vasily/PycharmProjects/my_packages/pyquark/logs/pyquark.sys.log
+[10/May/25 16:28:43] pyquark.sys:  DEBUG [Bcolors.main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[10/May/25 16:28:43] pyquark.sys:  DEBUG [Bcolors.main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[10/May/25 16:28:43] pyquark.sys: WARNING [Bcolors.main.debug_is_on]  <function main.<locals>.<lambda> at 0x76dff1d944a0>
+[10/May/25 16:28:43] pyquark.sys:   INFO [Bcolors.main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[10/May/25 16:28:43] pyquark.sys:  ERROR [Bcolors.main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[10/May/25 16:28:43] pyquark.sys:  DEBUG [Bcolors.main.debug_is_on]  Print dictionary: {'a': 'AA', 'b': 'BB', 'error': 'Print my error'}
+[10/May/25 16:28:43] pyquark.sys: CRITICAL [Bcolors.main.debug_is_on]  Error: Print my error

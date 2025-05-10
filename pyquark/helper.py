@@ -82,12 +82,16 @@ class Bcolors:
     OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'
     WARNING = '\033[93m'
+    ORANGE = '\033[38;5;208m'
     FAIL = '\033[1;31;40m'
     RED = '\033[31m'
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+
+def ostring(string):
+    return "{}{}{}".format(Bcolors.ORANGE, string, Bcolors.ENDC)
 
 def rstring(string):
     return "{}{}{}".format(Bcolors.RED, string, Bcolors.ENDC)
@@ -520,7 +524,7 @@ class L(object):
             self.con_logger = logging.getLogger(con_logger_name)
             self.con_logger.setLevel(logging.DEBUG)  # Set's the root level for the logger. Handler can overwrite it
             """ Console handler """
-            con_handler_level = logging.DEBUG if self.debug else logging.WARNING
+            con_handler_level = logging.DEBUG if self.debug else logging.INFO
             log_con_handler = logging.StreamHandler()
             log_con_handler.setFormatter(self.log_format)
             log_con_handler.setLevel(con_handler_level)  # NOTSET(0),DEBUG(10),INFO(20),WARNING(30),ERROR(40),CRITICAL(50)
@@ -598,9 +602,17 @@ class L(object):
 
     def rprint(self, str_line, **kwargs):
         if self.logger:
-            self.logger.warning(self.FORMAT.format(self.prefix, str_line))
+            self.logger.error(self.FORMAT.format(self.prefix, str_line))
         if self.con_logger:
             str_line = rstring(self.FORMAT.format(self.prefix, str_line))
+            self.con_logger.error(str_line)
+
+    def oprint(self, str_line, **kwargs):
+        """Warning print"""
+        if self.logger:
+            self.logger.warning(self.FORMAT.format(self.prefix, str_line))
+        if self.con_logger:
+            str_line = ostring(self.FORMAT.format(self.prefix, str_line))
             self.con_logger.warning(str_line)
 
     def yprint(self, str_line, **kwargs):
@@ -626,11 +638,11 @@ class L(object):
             str_line = str_line()  # Evaluate only when required
 
         if self.logger:
-            self.logger.info(self.FORMAT.format(self.prefix, str_line))
+            self.logger.debug(self.FORMAT.format(self.prefix, str_line))
 
         if self.con_logger:
             str_line = bstring(self.FORMAT.format(self.prefix, str_line))
-            self.con_logger.info(str_line)
+            self.con_logger.debug(str_line)
 
     def gprint(self, str_line, **kwargs):
         if self.omit_all:
@@ -641,11 +653,13 @@ class L(object):
             str_line = str_line()  # Evaluate only when required
 
         if self.logger:
-            self.logger.warning(self.FORMAT.format(self.prefix, str_line))
+            self.logger.info(self.FORMAT.format(self.prefix, str_line))
 
         if self.con_logger:
             str_line = gstring(self.FORMAT.format(self.prefix, str_line))
-            self.con_logger.warning(str_line)
+            self.con_logger.info(str_line)
+
+
 
     def print_error(self, errors):
         if type(errors).__name__ == 'dict':
@@ -653,16 +667,16 @@ class L(object):
                 if error_key not in ('error', 'source', 'params'):
                     continue
                 if self.logger:
-                    self.logger.error('{}{}: {}'.format(self.prefix, str(error_key).capitalize(), error_value))
+                    self.logger.critical('{}{}: {}'.format(self.prefix, str(error_key).capitalize(), error_value))
                 if self.con_logger:
                     str_line = error_string('{}{}: {}'.format(self.prefix, str(error_key).capitalize(), error_value))
-                    self.con_logger.error(str_line)
+                    self.con_logger.critical(str_line)
         else:
             if self.logger:
-                self.logger.error(self.FORMAT.format(self.prefix, errors))
+                self.logger.critical(self.FORMAT.format(self.prefix, errors))
             if self.con_logger:
                 str_line = rstring(self.FORMAT.format(self.prefix, errors))
-                self.con_logger.error(str_line)
+                self.con_logger.critical(str_line)
 
 
 def slugify(value, allow_unicode=False):
@@ -724,6 +738,7 @@ def main():
     p.print(lambda: f"Logger filename: {p.log_file_name}")
     p.print(lambda: f"Print dictionary: {test_dict}")
     p.bprint(lambda: f"Print dictionary: {test_dict}")
+    p.oprint(lambda: f"Print dictionary: {test_dict}")
     p.gprint(f"Print dictionary: {test_dict}")
     p.rprint(f"Print dictionary: {test_dict}")
     p.yprint(f"Print dictionary: {test_dict}")
