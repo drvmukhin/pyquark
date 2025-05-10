@@ -32,6 +32,7 @@ def target_directory(output_path: Optional[str] = None) -> str:
         :rtype: str
     returns:
         An absolute directory path as a string.
+        An absolute directory path as a string.
     """
     if output_path:
         if not os.path.isabs(output_path):
@@ -611,10 +612,10 @@ class L(object):
             str_line = str_line()  # Evaluate only when required
 
         if self.logger:
-            self.logger.info(self.FORMAT.format(self.prefix, str_line))
+            self.logger.debug(self.FORMAT.format(self.prefix, str_line))
         if self.con_logger:
             str_line = ystring(self.FORMAT.format(self.prefix, str_line))
-            self.con_logger.info(str_line)
+            self.con_logger.debug(str_line)
 
     def bprint(self, str_line, **kwargs):
         if self.omit_all:
@@ -640,11 +641,11 @@ class L(object):
             str_line = str_line()  # Evaluate only when required
 
         if self.logger:
-            self.logger.info(self.FORMAT.format(self.prefix, str_line))
+            self.logger.warning(self.FORMAT.format(self.prefix, str_line))
 
         if self.con_logger:
             str_line = gstring(self.FORMAT.format(self.prefix, str_line))
-            self.con_logger.info(str_line)
+            self.con_logger.warning(str_line)
 
     def print_error(self, errors):
         if type(errors).__name__ == 'dict':
