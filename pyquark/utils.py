@@ -41,3 +41,55 @@ def find_parent_path(path, target_folder, logger=None):
                 print(f"Max level {max_level} reached. Stopping search.")
             break
     return None
+
+
+def __init__(self, name):
+    self.name = name
+    self.zones = []
+    self.damage_size = 0.0
+    self.is_damaged = False
+    self.masks = {}  # Dictionary of masks
+    self.damage_masks = {}  # Dictionary of damage masks
+    self._numpy_arrays = []  # Track NumPy arrays
+    self._custom_objects = []  # Track custom objects with __destroy__ method
+
+
+def __destroy__(self, hard_destroy=False):
+    """
+    Frees up memory by clearing all instance attributes
+
+    Args:
+        hard_destroy (bool): If True, removes all attributes using delattr
+                            regardless of their type
+    """
+    if hard_destroy:
+        # Get all attributes and delete them
+        attrs = list(self.__dict__.keys())
+        for attr_name in attrs:
+            delattr(self, attr_name)
+        return
+
+    # Handle specific attribute types differently
+    for attr_name, attr_value in self.__dict__.items():
+        if attr_value is None:
+            continue
+
+        # Handle by type
+        if isinstance(attr_value, dict):
+            attr_value.clear()
+        elif isinstance(attr_value, (list, tuple)):
+            # Set to empty of the same type
+            if isinstance(attr_value, list):
+                setattr(self, attr_name, [])
+            else:
+                setattr(self, attr_name, ())
+        elif hasattr(attr_value, '__destroy__'):
+            # Call __destroy__ on objects that have that method
+            attr_value.__destroy__()
+            setattr(self, attr_name, None)
+        elif 'numpy' in str(type(attr_value).__module__):
+            # This handles NumPy arrays specifically
+            delattr(self, attr_name)
+        else:
+            # For simple types, just set to None
+            setattr(self, attr_name, None)

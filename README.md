@@ -16,6 +16,7 @@
 - v.0.3.14: Decorator param has no effect on prefix lod. Fixed
 - v.0.3.15: Added utils.py file with utility functions. get_parent_path(path, levels_up) added.
 - v.0.3.16: Added utils.py find_parent_path() added.
+- v.0.3.19: Added __destroy__ base method to use with any class to enforce the destruction of the class instance.
 
 ## Lazy logging
 With "lazy evaluation," you can use a lambda function (or another callable) to delay the evaluation of str_line until it's actually needed. This way, when self.omit is True, the str_line will not be generated or evaluated at all, saving compute cycles.
