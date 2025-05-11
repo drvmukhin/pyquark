@@ -54,7 +54,7 @@ def __init__(self, name):
     self._custom_objects = []  # Track custom objects with __destroy__ method
 
 
-def __destroy__(self, hard_destroy=False):
+def __destroy__(self, hard_destroy=False, calling_class=None):
     """
     Frees up memory by clearing all instance attributes
 
@@ -62,16 +62,19 @@ def __destroy__(self, hard_destroy=False):
         hard_destroy (bool): If True, removes all attributes using delattr
                             regardless of their type
     """
+    # Create a list of all attributes
+    attrs = list(self.__dict__.keys())
+
     if hard_destroy:
         # Get all attributes and delete them
-        attrs = list(self.__dict__.keys())
         for attr_name in attrs:
             delattr(self, attr_name)
         return
 
     # Handle specific attribute types differently
-    for attr_name, attr_value in self.__dict__.items():
-        if attr_value is None:
+    for attr_name in attrs:
+
+        if (attr_value := getattr(self, attr_name, None)) is None:
             continue
 
         # Handle by type
@@ -83,7 +86,7 @@ def __destroy__(self, hard_destroy=False):
                 setattr(self, attr_name, [])
             else:
                 setattr(self, attr_name, ())
-        elif hasattr(attr_value, '__destroy__'):
+        elif getattr(attr_value.__class__, '__destroy__', None) and type(attr_value) != calling_class:
             # Call __destroy__ on objects that have that method
             attr_value.__destroy__()
             setattr(self, attr_name, None)
