@@ -587,6 +587,32 @@ class L(object):
                     return self._log_file_name
         return None
 
+    def remove(self):
+        # Terminate the logger
+        con_logger_name = self.con_logger.name
+        file_logger_name = self.logger.name
+
+        # Delete console logger
+        for handler in self.con_logger.handlers[:]:
+            self.con_logger.removeHandler(handler)
+        self.con_logger.disabled = True
+
+        # Delete file logger
+        for handler in self.logger.handlers[:]:
+            self.logger.removeHandler(handler)
+        self.logger.disabled = True
+
+        # Finally unregister from the manager
+        logging.Logger.manager.loggerDict.pop(con_logger_name, None)
+        logging.Logger.manager.loggerDict.pop(file_logger_name, None)
+
+        # Check if logger exists in the manager
+        if con_logger_name in logging.Logger.manager.loggerDict.keys():
+            print(f"CONSOLE LOGGER STILL EXISTS: {con_logger_name}")
+        else:
+            print(f"CONSOLE LOGGER WAS REMOVED SUCCESSFULLY: {con_logger_name}")
+
+
     def print(self, str_line, **kwargs):
         if self.omit:
             return
@@ -677,6 +703,8 @@ class L(object):
             if self.con_logger:
                 str_line = rstring(self.FORMAT.format(self.prefix, errors))
                 self.con_logger.critical(str_line)
+
+
 
 
 def slugify(value, allow_unicode=False):
