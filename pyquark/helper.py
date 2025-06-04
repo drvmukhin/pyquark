@@ -635,6 +635,9 @@ class L(object):
 
     def oprint(self, str_line, **kwargs):
         """Warning print"""
+        if self.omit_all:
+            return
+
         if self.logger:
             self.logger.warning(self.FORMAT.format(self.prefix, str_line))
         if self.con_logger:

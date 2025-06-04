@@ -18,6 +18,7 @@
 - v.0.3.16: Added utils.py find_parent_path() added.
 - v.0.3.19: Added __destroy__ base method to use with any class to enforce the destruction of the class instance.
 - v.0.3.20: Added remove method into the L class to remove the logger instance from the registry.
+- v.0.3.21: Omit_all blocks warning (oprint) logging to console and file.
 
 ## Lazy logging
 With "lazy evaluation," you can use a lambda function (or another callable) to delay the evaluation of str_line until it's actually needed. This way, when self.omit is True, the str_line will not be generated or evaluated at all, saving compute cycles.
